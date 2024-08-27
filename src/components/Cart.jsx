@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { deleteFromCart, updateItemFromSelect } from '../features/cart';
 
 export default function Cart({ onClose }) {
   const cart = useSelector((state) => state.cart);
@@ -34,8 +35,16 @@ export default function Cart({ onClose }) {
                 </p>
                 <select
                   name="quantity"
-                  // onChange={(e) => dispatch()}
+                  onChange={(e) =>
+                    dispatch(
+                      updateItemFromSelect({
+                        id: item.id,
+                        value: e.target.value,
+                      })
+                    )
+                  }
                   className="w-20 p-2 rounded mr-4"
+                  value={item.quantity}
                 >
                   <option value="1">1</option>
                   <option value="2">2</option>
@@ -44,7 +53,10 @@ export default function Cart({ onClose }) {
                   <option value="5">5</option>
                   <option value="6">6</option>
                 </select>
-                <button className="bg-slate-900 text-slate-200 px-2 inline-flex justify-center items-center p-2 rounded">
+                <button
+                  onClick={() => dispatch(deleteFromCart(item.id))}
+                  className="bg-slate-900 text-slate-200 px-2 inline-flex justify-center items-center p-2 rounded"
+                >
                   Remove from cart
                 </button>
               </li>
@@ -53,7 +65,15 @@ export default function Cart({ onClose }) {
             <li className="mb-4">No items in the cart</li>
           )}
         </ul>
-        <p className="text-xl">Your total: {}</p>
+        <p className="text-xl">
+          Your total :{' '}
+          <span className="font-semibold">
+            {cart.cartItems
+              .reduce((acc, curr) => acc + curr.price * curr.quantity, 0)
+              .toFixed(2)}
+            $
+          </span>
+        </p>
         <button className="block mx-auto bg-slate-800 text-slate-200 px-4 py-2 mt-7 rounded">
           Proceed to checkout
         </button>

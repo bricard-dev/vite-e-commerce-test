@@ -18,6 +18,11 @@ export const products = createSlice({
         (product) => product.id === action.payload.id
       ).picked = true;
     },
+    ['cart/deleteFromCart']: (state, action) => {
+      state.items.find(
+        (product) => product.id === action.payload
+      ).picked = false;
+    },
   },
 });
 
