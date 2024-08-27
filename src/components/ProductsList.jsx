@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
+import { addOneToCart } from '../features/cart';
 import { getProductsList } from '../features/products';
 
 export default function ProductsList() {
@@ -8,8 +9,6 @@ export default function ProductsList() {
   if (!products) {
     dispatch(getProductsList());
   }
-
-  console.log(products);
 
   return (
     <div className="px-6">
@@ -28,6 +27,7 @@ export default function ProductsList() {
                 <p className="text-slate-900 font-bold">{product.price}</p>
               </div>
               <button
+                onClick={() => dispatch(addOneToCart(product.id))}
                 className={`${
                   product.picked ? 'bg-green-700' : 'bg-slate-600'
                 } w-full text-slate-100 px-2 inline-flex items-center justify-center rounded p-2 mr-2`}
